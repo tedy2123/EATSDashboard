@@ -1,0 +1,238 @@
+{% extends 'base.html'%}
+{%block title%}
+Maindashboard
+{% endblock %}
+
+{% block content %}
+<!--<marquee width="40%" direction="right" height="50px">-->
+<!--<h3>EATS Project Dashboard</h3>-->
+<!--</marquee>-->
+
+<h3>Transparent Sustainability Dashboard</h3>
+
+
+</body>
+ <div class="container">
+   <form action="{{ url_for("optimize") }}", method="POST">
+
+
+	<div class="form-group">
+        <div class="row">
+            <div class="col-3">
+                 <label> Data source Legend:</label>
+            </div>
+            <div class="col">
+                   <input type="checkbox" id="cb2" name="yellow" value="yellow" checked>
+                 <label for="yellow"> MetOfficeForecast</label>
+            </div>
+            <div class="col">
+                  <input type="checkbox" id="cb3" name="Red" value="Red" checked>
+                 <label for="purple"> Predicted</label>
+            </div>
+              <div class="col">
+                  <input type="checkbox" id="cb1" name="green" value="Bike" style="background-color:#00FF7F" checked>
+                 <label for="green"> Sensors</label>
+            </div>
+            <div class="col">
+                  <input type="checkbox" id="cb4" name="Red" value="Red" checked>
+                 <label for="red"> Manual</label>
+            </div>
+        <div class="row">
+			   <div class="col-4">
+                          Weeks<select name="comp_select_week" class="selectpicker form-control" id="selectbox3">
+                            {% for o in weeks %}
+                            <option value="{{ o.name }}">{{ o.name }}</option>
+                             {% endfor %}
+                       </select>
+               </div>
+
+             <div class="col-4">
+                          Tunnels<select name="comp_select_tunnels" class="selectpicker form-control" id="selectbox2">
+                            {% for o in number_of_tunnels %}
+                            <option value="{{ o.name }}">{{ o.name }}</option>
+                             {% endfor %}
+                       </select>
+               </div>
+
+
+               <div class="col">
+                     <br>
+                    <button type="submit" class="btn btn-info" formaction="{{url_for("data_retrieve")}}">Retrieve</button>
+                </div>
+        </div><br>
+    </div>
+		<div class="row">
+            <div class="col">
+                  <label >Days</label>
+            </div>
+            <div class="col">
+                  <label >Outside Temperature (&degC)</label>
+            </div>
+            <div class="col">
+                  <label >Outside Humidity (&degC)</label>
+            </div>
+            <div class="col">
+                  <label >Inside Temperature (&degC)</label>
+            </div>
+            <div class="col">
+                  <label >Inside Humidity (&degC)</label>
+            </div>
+            <div class="col">
+                  <label >Soil Moisture (kPa)</label>
+            </div>
+          <div class="col">
+                  <label >Soil temperature (&degC)</label>
+            </div>
+          <div class="col">
+                  <label>PAR</label>
+            </div>
+        </div>
+
+    </div>
+
+     {% set paint = namespace(a = -1) %}  <!--   to control historical and future data for painting-->
+       {% for data_value in data %}
+
+
+            {% set tempout = data_value.tempout %}
+            {% set humout = data_value.humout %}
+            {% set tempin = data_value.tempin %}
+            {% set humin = data_value.humin %}
+
+            {% set sm = data_value.sm %}
+            {% set st = data_value.st %}
+            {% set apr = data_value.apr %}
+            {% set list=[tempout, humout,tempin, humin,sm,st,apr]%}
+            {% set col=["tempout","humout","tempin","humin","sm","st","apr"]%}
+
+            {% set paint.a = paint.a+1 %}
+              <div class="form-group">
+                <div class="row">
+                 <div class="col">
+                     {%if data_value.days==today %}
+                       <label for="monday">Today</label>
+                     {% else %}
+                       <label for="monday">{{ data_value.days }}</label>
+                     {% endif %}
+
+                 </div>
+<!--                 To give appropriate name for each textfield to access later -->
+                    {% set ns = namespace(c= -1) %}
+                    {% for i in range(-1 , 6) %}
+                     {% set ns.c = ns.c+1 %}
+                     {% set name = data_value.days %}
+                     {% set name = name ~ ns.c %}
+
+                       <div class="col">
+                      <!-- To give unique name for all textfields -->
+
+                            {% if bgcolor=="" %}
+                                   {% if color[paint.a] == 0 %}
+                                            {% if "tempout" ==col[ns.c] %}
+                                             <input type="text" class="form-control" value={{ list[ns.c] }} id={{ name }}  name={{ name }} style="background-color:#ffff00" readonly>
+                                            {% elif "humout" == col[ns.c] %}
+                                            <input type="text" class="form-control" value={{ list[ns.c] }} id={{ name }}  name={{ name }} style="background-color:#ffff00" readonly>
+                                            {% else %}
+                                             <input type="text" class="form-control" value={{ list[ns.c] }} id={{ name }}  name={{ name }} style="background-color:#FF00FF" readonly>
+                                            {% endif %}
+
+                                    {% else %}
+                                      <input type="text" class="form-control" value={{ list[ns.c] }} id={{ name }}  name={{ name }}  style="background-color:#00FF7F" readonly>
+                                    {% endif %}
+
+                            {% else %}
+                              <input type="text" class="form-control" value={{ list[ns.c] }} id={{ name }}  name={{ name }}  style="background-color:#00FF7F" readonly>
+                            {% endif %}
+                     </div>
+                     {% endfor %}
+
+              </div>
+            </div>
+       {% set list=list.clear() %} <!--to reset the list value -->
+       {% endfor %}
+<!--        to create texbox for watreflow -->
+     {% set paint = namespace(a = -1) %} <!-- to control painting -->
+           <div class="row">
+               <label >Please fill <br>water  intake</label>
+           {% for data_value in data %}
+               {% set paint.a = paint.a+1 %}
+                <div class="col">
+                      {%if data_value.days==today %}
+                       <label for="monday">Today</label>
+                     {% else %}
+                       <label for="monday">{{ data_value.days }}</label>
+                     {% endif %}
+
+                      {% if bgcolor=="" %}
+                             {% if color[paint.a] == 0 %}
+                            <input type="text" class="form-control" value={{ data_value.flow}} id={{ data_value.days}}    name={{ data_value.days}}  style="background-color:#FF00FF"  oninput="changeBackgroundColor(this)">
+                            {% else %}
+                          <input type="text" class="form-control" value={{ data_value.flow}} id={{ data_value.days }}  name={{ data_value.days }}  style="background-color:#00FF7F"  oninput="changeBackgroundColor(this)">
+                           {% endif %}
+                      {% else %}
+                              <input type="text" class="form-control" value={{ data_value.flow}} id={{ data_value.days }}  name={{ data_value.days}}  style="background-color:#00FF7F" readonly>
+                    {% endif %}
+
+                     </div>
+            {% endfor %}
+
+           </div>
+            <br>
+		<div class="row">
+            <div class="col-2">
+
+              </div>
+
+             <div class="col-2">
+               <br> <button type="submit" class="btn btn-success" id="optimize" formaction="{{url_for("optimize")}}">Optimize</button>
+            </div>
+             <div class="col-2">
+                          Recommended<select name="comp_select_recommend" class="selectpicker form-control" id="selectbox4">
+                            {% for o in optimize_value %}
+                            <option value="{{ o.name }}">{{ o.name }}</option>
+                             {% endfor %}
+                       </select>
+               </div>
+            <div class="col-2">
+                <br>
+                <button type="submit" class="btn btn-primary" formaction="{{url_for("decision")}}">Decision</button>
+            </div>
+
+        </div>
+         <br>
+</form>
+
+ </div> <!--End of container-->
+{% endblock %}
+
+ {% block result %}
+     <br>
+       <div class="row">
+            <div class="col-md-10">
+                 <label for="yield">Forcasted yield class 1</label>
+                  <input type="text" class="form-control" value="{{ predicted_class1 }}" id="yield" name="yield" >
+            </div>
+            </div>
+          <div class="row">
+            <div class="col-md-10">
+                 <label for="yield">Forcasted yield class 2</label>
+                  <input type="text" class="form-control" value="{{ predicted_class2 }}" id="yield" name="yield">
+            </div>
+            </div>
+          <div class="row">
+                <div class="col-md-10">
+                 <label for="carbon">Water Usage</label>
+                <input type="text" class="form-control" value="{{ carbon_usage }}" id="carbon" name="carbon">
+            </div>
+           </div>
+          <div class="row">
+                <div class="col-md-10">
+                 <label for="carbon">Carbon footprint</label>
+                <input type="text" class="form-control" value="{{ water_usage }}" id="carbon" name="carbon">
+            </div>
+            </div>
+
+      {% endblock %}
+
+</body>
+

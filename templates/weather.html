@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block title %}
+Weather
+{% endblock %}
+
+<body>
+{% block content %}
+    <div class="container">
+        <h4>Barns Muir, Anstruther site 24hrs Weather data from MetOffice, Uk</h4>
+      <form action={{url_for("get_weather")}} method="POST" >
+	       <div class="form-group">
+                <table class="table table-bordered table-hover table-sm">
+                <thread>
+                    <tr  class="bg-primary">
+                   <th scope="col">Timestamp</th>
+                   <th scope="col">Temperature (&degC)</th>
+                   <th scope="col">Humidity</th>
+                 </tr>
+                </thread>
+                    <tbody>
+<!--         toget the weather data -->
+                {% for data in weatherdata %}
+
+
+                        <tr class="table-secondary">
+<!--                      <th scope="row">{{ data.dateZ}} : {{data.hhmm}}</th>-->
+                        <td> <input type="text" class="form-control" value="{{ data.dateZ}} : {{data.hhmm}}" id="t{{data.index}}" name="t{{data.index}}" readonly></td>
+                      <td> <input type="text" class="form-control" value={{data.temperature}} id="t{{data.index}}" name="t{{data.index}}" readonly></td>
+                     <td> <input type="text" class="form-control" value={{data.humidity}} id="h{{data.index}}" name="h{{data.index}}" readonly></td>
+                    </tr>
+                {%endfor%}
+                     </tbody>
+                  </table>
+          </div>
+   </form>
+   </div>
+{% endblock %}
+</body>

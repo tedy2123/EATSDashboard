@@ -1,0 +1,41 @@
+{% extends 'base.html'%}
+{%block title%}
+Homepage
+{% endblock %}
+
+{% block content %}
+
+ </tbody>
+<h3>Yield forcasting using Linear regression model</h3>
+<p> Mean Squared Error (normalized): {{msen}} </p>
+ <table class="table table-hover table-dark">
+        <thead>
+            <tr>
+                <!-- Your Columns HERE -->
+                <th scope="col">Predicted yield Class 1</th>
+                <th scope="col">Actual yield Class 1</th>
+                <th scope="col">Predicted yield Class 2</th>
+                <th scope="col">Actual yield Class 2</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Your rows inside the table HERE: -->
+            {% for data in results %}
+            <tr>
+                    <td>{{ data.Predicted_Class1_Yield}}</td>
+                    <td>{{ data.Class1_Yield }}</td>
+                    <td>{{ data.Predicted_Class2_Yield}}</td>
+                    <td>{{ data.Class2_Yield }}</td>
+
+
+            </tr>
+             {% endfor %}
+
+        </tbody>
+    </table>
+
+
+
+<!-- {{user1}}-->
+{% endblock %}

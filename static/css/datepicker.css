@@ -1,0 +1,51 @@
+
+.datepicker {
+   background: #333;
+   border: 1px solid #555;
+   color: #0e1111;
+       }
+select option {
+  margin: 40px;
+  background: rgba(0, 0, 0, 0.3);
+  color: #000000;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.4);
+}
+select option[value="Sensors"] {
+  background: rgba(0, 250, 0);
+}
+
+select option[value="MetOffice"] {
+  background: rgba(250, 250, 0, 1);
+}
+
+select option[value="Predicted"] {
+  background: rgba(0, 250, 250,1);
+}
+
+select option[value="Manual"] {
+  background: rgba(255, 127, 80, 1);
+}
+#cb1 {
+  accent-color: #00FF7F;
+   width: 25px;
+   height: 25px;
+   DisplayMode.Disabled
+}
+
+#cb2 {
+  accent-color: #ffff00;
+  width: 25px;
+  height: 25px;
+}
+
+#cb3 {
+  accent-color: #FF00FF;
+  width: 25px;
+  height: 25px;
+}
+#cb4 {
+  accent-color: #e74c2c;
+  width: 25px;
+  height: 25px;
+}
+
