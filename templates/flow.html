@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{% block title %}
+Homepage
+{% endblock %}
+
+
+
+<body>
+
+{% block content %}
+
+<br>
+    <div class="container">
+         <form class="form-inline" method="POST" action="{{ url_for('flow_plot') }}" name="tempform" onsubmit="return validateForm()" >
+
+		   <div class="row">
+                <br>
+               <div class="col">
+                <label for="selectbox">Please select tunnel</label>
+              </div>
+			  <div class="col">
+                  <br>
+                <select name="comp_select" class="selectpicker form-control" id="selectbox">
+                            {% for o in number_of_tunnels %}
+                            <option value="{{ o.name }}">{{ o.name }}</option>
+                             {% endfor %}
+                       </select>
+              </div>
+
+
+
+			  <div class="col">
+                           <label for="datetimepicker">From</label>
+                           <div class='input-group date' id='datetimepicker'>
+                           <input id="datepicker" width="200" name="from"/>
+
+                             </div>
+             </div>
+
+             <div class="col">
+                         <label for="datetimepicker1">To</label>
+                           <div class='input-group date' id='datetimepicker1'>
+                           <input id="datepicker1" width="200" name="to"/>
+                             </div>
+               </div>
+
+               <div class="col">
+                   <br>
+                    <button type="submit" class="btn btn-primary">Plot</button>
+                </div>
+
+        </div>
+</form>
+        <br>
+        <div class="row">
+
+        <img src='data:image/png;base64,{{ image }}' alt="Figure is rendered below!" height="700" width="800">
+
+    </div>
+ </div>
+
+    <script>
+        $('#datepicker').datepicker({
+            uiLibrary: 'bootstrap4',
+            format: "yyyy-mm-dd"
+        });
+    </script>
+  <script>
+        $('#datepicker1').datepicker({
+            uiLibrary: 'bootstrap4',
+            format: "yyyy-mm-dd"
+        });
+
+    </script>
+
+
+
+
+{% endblock %}
+
+
+</body>

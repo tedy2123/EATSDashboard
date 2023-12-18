@@ -1,0 +1,96 @@
+{% extends 'base.html'%}
+{%block title%}
+Yield
+{% endblock %}
+
+{% block content %}
+
+<br>
+    <div class="container">
+         <form class="form-inline" method="POST" action="{{ url_for('yield_page') }}" name="tempform" onsubmit="return validateForm()" >
+
+		   <div class="row">
+                <br>
+               <div class="col">
+                <label for="selectbox">Please select tunnel</label>
+              </div>
+			  <div class="col">
+                  <br>
+                <select name="comp_select" class="selectpicker form-control" id="selectbox">
+                            {% for o in number_of_tunnels %}
+                            <option value="{{ o.name }}">{{ o.name }}</option>
+                             {% endfor %}
+                       </select>
+              </div>
+			  <div class="col">
+                           <label for="datetimepicker">From</label>
+                           <div class='input-group date' id='datetimepicker'>
+                           <input id="datepicker" width="200" name="from"/>
+
+                             </div>
+             </div>
+
+             <div class="col">
+                         <label for="datetimepicker1">To</label>
+                           <div class='input-group date' id='datetimepicker1'>
+                           <input id="datepicker1" width="200" name="to"/>
+                             </div>
+               </div>
+
+               <div class="col">
+                   <br>
+                    <button type="submit" class="btn btn-primary">Show</button>
+                </div>
+
+        </div>
+</form>
+        <br>
+        <div class="row">
+
+       </tbody>
+ <table class="table table-hover table-dark">
+        <thead>
+            <tr>
+                <!-- Your Columns HERE -->
+                <th scope="col">ID</th>
+                <th scope="col">Submission Date </th>
+                <th scope="col"> Class 1 yield </th>
+                <th scope="col"> Class 2 yield </th>
+
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Your rows inside the table HERE: -->
+            {% for data in yielddata %}
+                <tr>
+                    <td>{{ data.ID}}</td>
+                    <td>{{ data.Submission_Date}}</td>
+                    <td>{{ data.Class1_Yield}}</td>
+                    <td>{{ data.Class2_Yield}}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    </div>
+ </div>
+
+
+
+
+
+<!-- {{user1}}-->
+ <script>
+        $('#datepicker').datepicker({
+            uiLibrary: 'bootstrap4',
+            format: "yyyy-mm-dd"
+        });
+    </script>
+  <script>
+        $('#datepicker1').datepicker({
+            uiLibrary: 'bootstrap4',
+            format: "yyyy-mm-dd"
+        });
+
+    </script>
+{% endblock %}
